@@ -1,14 +1,15 @@
 import os
 import json
-import pyodbc
+'''import pyodbc'''
+import pickle
 from pathlib import Path
-from numpy import genfromtxt
-from geopy.geocoders import Nominatim
+'''from numpy import genfromtxt
+from geopy.geocoders import Nominatim'''
 
 folder_name = "data_files/normals-annualseasonal"
 folder = Path(folder_name)
 
-geolocator = Nominatim(user_agent="Tester")
+'''geolocator = Nominatim(user_agent="Tester")'''
 data_arr = []
 broken_data = []
 
@@ -52,7 +53,12 @@ def refillData():
     print("Refill done")
     return tempData_arr
 
-with open('data_files/data.txt', 'r') as fr:
+data_arr = refillData()
+
+with open('data_files/data.bin', 'wb') as fw:
+    pickle.dump(data_arr, fw)
+
+'''with open('data_files/data.txt', 'r') as fr:
     # читаем из файла
     try:
         data_arr = json.load(fr)
@@ -69,17 +75,35 @@ with open('data_files/data.txt', 'r') as fr:
         with open('data_files/data.txt', 'w') as fw:
             json.dump(refillData(), fw)
         
-        data_arr = json.load(fr)
+        data_arr = json.load(fr)'''
 
-if(len(data_arr)+len(broken_data) != len(list(folder.iterdir()))):
+'''if(len(data_arr)+len(broken_data) != len(list(folder.iterdir()))):
     print("----------------------------------------------\nThe number of source files does not match the number of saved files")
     with open('data_files/data.txt', 'w') as fw:
-        json.dump(refillData(), fw)
+        json.dump(refillData(), fw)'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 print("----------------------------------------------")
 
 #Функция для получения значения по ключу, в определенном массиве  
-def findValue (key, temp_arr):
+'''def findValue (key, temp_arr):
     if key in temp_arr:
         return(temp_arr[key])
     else:
@@ -118,7 +142,7 @@ print("Property: " + prop)
 #print (station_location_min, station_location_max)
 print("\nFile (min): " + fileName_min+".csv\nMin value: " + str(min) + "\nLocation with min value: "+location_min.address)
 print("\nFile (max): " + fileName_max+".csv\nMax value: " + str(max) + "\nLocation with max value: "+location_max.address)
-#print (len(data_arr))
+#print (len(data_arr))'''
 
 
 
