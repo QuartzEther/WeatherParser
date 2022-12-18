@@ -1,5 +1,6 @@
 import os
 import json
+import gzip
 from pathlib import Path
 from numpy import genfromtxt
 from geopy.geocoders import Nominatim
@@ -12,10 +13,11 @@ data_arr = []
 broken_data = []
 
 #создание фйлов data.txt и broken_data.txt если их нет в дректории
-if (os.path.isfile('/data_files/data.txt') == False):
-    open("data_files/data.txt", "w+")
+if (os.path.isfile('/data_files/data.bin') == False):
+    open("data_files/data.bin", "w+")
 if (os.path.isfile('/data_files/broken_data.txt') == False):
     open("data_files/broken_data.txt", "w+")
+
 
 def refillData():
     print("Start refill data")
@@ -57,8 +59,31 @@ def refillData():
     print("Refill done")
     return tempData_arr
 
+def compress_data(data):
+    # Convert to JSON
+    json_data = json.dumps(data, indent=2)
+    # Convert to bytes
+    encoded = json_data.encode('utf-8')
+    # Compress
+    return gzip.compress(encoded)
 
-with open('data_files/data.txt', 'r') as fr:
+def decompress_data(data):
+    decompress_data = gzip.decompress(data)
+    decoded = decompress_data.decode('utf-8')
+    return json.loads(decoded)
+
+with open('data_files/data.bin', 'wb') as fw:
+    str = "Hello"
+    print(str)
+    fw.write(compress_data(str))
+print(fw)
+
+
+with open('data_files/data.bin', 'rb') as fr:
+    print(decompress_data(fr.read()))
+
+
+'''with open('data_files/data.txt', 'r') as fr:
     # читаем из файла
     try:
         data_arr = json.load(fr)
@@ -68,9 +93,9 @@ with open('data_files/data.txt', 'r') as fr:
         with open('data_files/data.txt', 'w') as fw:
             data_arr = refillData()
             json.dump(data_arr, fw)
-        
+        '''
 
-with open('data_files/broken_data.txt', 'r') as br:
+'''with open('data_files/broken_data.txt', 'r') as br:
     try:
         broken_data = json.load(br)
         for s in broken_data:
@@ -130,7 +155,7 @@ print("Property: " + prop)
 #print (station_location_min, station_location_max)
 print("\nFile (min): " + fileName_min+".csv\nMin value: " + str(min) + "\nLocation with min value: "+location_min.address)
 print("\nFile (max): " + fileName_max+".csv\nMax value: " + str(max) + "\nLocation with max value: "+location_max.address)
-#print (len(data_arr))
+#print (len(data_arr))'''
 
 
 
