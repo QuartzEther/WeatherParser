@@ -12,6 +12,12 @@ geolocator = Nominatim(user_agent="Tester")
 data_arr = []
 broken_data = []
 
+#создание фйлов data.bin и broken_data.txt если их нет в дректории
+if (os.path.isfile('/data_files/data.bin') == False):
+    open("data_files/data.bin", "w+")
+if (os.path.isfile('/data_files/broken_data.txt') == False):
+    open("data_files/broken_data.txt", "w+")
+
 def refillData():
     print("Start refill data")
     tempData_arr = []
