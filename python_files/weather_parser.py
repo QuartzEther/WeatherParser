@@ -11,6 +11,12 @@ geolocator = Nominatim(user_agent="Tester")
 data_arr = []
 broken_data = []
 
+#создание фйлов data.txt и broken_data.txt если их нет в дректории
+if (os.path.isfile('/data_files/data.txt') == False):
+    open("data_files/data.txt", "w+")
+if (os.path.isfile('/data_files/broken_data.txt') == False):
+    open("data_files/broken_data.txt", "w+")
+
 def refillData():
     print("Start refill data")
     tempData_arr = []
@@ -60,9 +66,9 @@ with open('data_files/data.txt', 'r') as fr:
         print ('data file is empty')
         #перезапись
         with open('data_files/data.txt', 'w') as fw:
-            json.dump(refillData(), fw)
+            data_arr = refillData()
+            json.dump(data_arr, fw)
         
-        data_arr = json.load(fr)
 
 with open('data_files/broken_data.txt', 'r') as br:
     try:
@@ -75,11 +81,9 @@ with open('data_files/broken_data.txt', 'r') as br:
 if(len(data_arr)+len(broken_data) != len(list(folder.iterdir()))):
     print("----------------------------------------------\nThe number of source files does not match the number of saved files")
     with open('data_files/data.txt', 'w') as fw:
-        json.dump(refillData(), fw)
+        data_arr = refillData()
+        json.dump(data_arr, fw)
 
-    #Перезаполнение массивов data и broken_data
-    with open('data_files/data.txt', 'r') as fr:
-        data_arr = json.load(fr)
     with open('data_files/broken_data.txt', 'r') as br:
         broken_data = json.load(br)
     
