@@ -60,7 +60,7 @@ with open('data_files/data.bin', 'rb') as fr:
         #перезапись
         with open('data_files/data.bin', 'wb') as fw:
             data_arr = refillData()
-            pickle.dump(data_arr, fw)
+            pickle.dump(data_arr, fw, protocol=pickle.HIGHEST_PROTOCOL)
         
 with open('data_files/broken_data.txt', 'r') as br:
     try:
