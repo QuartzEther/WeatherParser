@@ -68,20 +68,22 @@ def compress_data(data):
     return gzip.compress(encoded)
 
 def decompress_data(data):
-    decompress_data = gzip.decompress(data)
-    decoded = decompress_data.decode('utf-8')
+    decompres_data = gzip.decompress(data)
+    decoded = decompres_data.decode('utf-8')
     return json.loads(decoded)
 
+str = refillData()
+#print(len(str))
+
+
 with open('data_files/data.bin', 'wb') as fw:
-    str = "Hello"
-    print(str)
     fw.write(compress_data(str))
-print(fw)
 
 
 with open('data_files/data.bin', 'rb') as fr:
-    print(decompress_data(fr.read()))
+    data_arr = decompress_data(fr.read())
 
+print(len(data_arr))
 
 '''with open('data_files/data.txt', 'r') as fr:
     # читаем из файла
